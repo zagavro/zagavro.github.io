@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Taş Kağıt Makas</title>
+</head>
+<body>
+
+<h2>Taş Kağıt Makas Oyunu</h2>
+
+<p id="metin"></p>
+
+<input id="cevap" type="text" placeholder="taş / kağıt / makas">
+
+<button onclick="oyna()">Gönder</button>
+<button onclick="cikis()">Çıkış</button>
+
+<p id="sonuc"></p>
+<p id="puan"></p>
+
+<script>
+let tur = 0;
+let oyuncuPuan = 0;
+let pcPuan = 0;
+let oyunBitti = false;
+
+const bilgisayar = ["kağıt","taş","taş","makas","taş"];
+
+const metin = [
+"Oyuna hoşgeldin!",
+"1. tur: seçimini yap",
+"2. tur: seçimini yap",
+"3. tur: seçimini yap",
+"4. tur: seçimini yap",
+"5. tur: son seçim",
+"Oyun bitti!"
+];
+
+document.getElementById("metin").innerText = metin[0];
+
+function oyna() {
+    if (oyunBitti) return;
+
+    let secim = document.getElementById("cevap").value.toLowerCase().trim();
+    let pc = bilgisayar[tur];
+
+    if (secim === "") return;
+
+    if (secim === pc) {
+        oyuncuPuan++;
+        pcPuan++;
+        document.getElementById("sonuc").innerText = "Berabere!";
+    }
+    else if (
+        (secim === "taş" && pc === "makas") ||
+        (secim === "makas" && pc === "kağıt") ||
+        (secim === "kağıt" && pc === "taş")
+    ) {
+        oyuncuPuan++;
+        document.getElementById("sonuc").innerText = "Kazandın!";
+    }
+    else {
+        pcPuan++;
+        document.getElementById("sonuc").innerText = "Bilgisayar kazandı!";
+    }
+
+    tur++;
+
+    document.getElementById("puan").innerText =
+        "Skor → Sen: " + oyuncuPuan + " | PC: " + pcPuan;
+
+    document.getElementById("cevap").value = "";
+
+    if (tur < 5) {
+        document.getElementById("metin").innerText = metin[tur];
+    } else {
+        bitir();
+    }
+}
+
+function bitir() {
+    oyunBitti = true;
+
+    document.getElementById("metin").innerText = "Oyun bitti!";
+    document.getElementById("sonuc").innerText =
+        oyuncuPuan > pcPuan ? "Sen kazandın 🏆" :
+        oyuncuPuan < pcPuan ? "Bilgisayar kazandı 💻" :
+        "Berabere 🤝";
+}
+
+function cikis() {
+    document.body.innerHTML =
+        "<h2>Oyundan çıktın 👋</h2><p>Sayfayı yenileyerek tekrar oynayabilirsin.</p>";
+}
+</script>
+
+</body>
+</html>

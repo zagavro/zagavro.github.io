@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Otel Oyunu</title>
+</head>
+<body>
+
+<h2>Otel İşletme Oyunu 🏨</h2>
+
+<p id="metin"></p>
+
+<input id="cevap" type="text" placeholder="evet / hayır">
+
+<button onclick="devam()">Gönder</button>
+<button onclick="cikis()">Çıkış</button>
+
+<p id="sonuc"></p>
+<p id="puan"></p>
+
+<script>
+let adim = 0;
+let puan = 0;
+let oyunBitti = false;
+
+const sorular = [
+"Otele hoşgeldiniz!",
+"Müşteri: Oda 1 anahtarı alabilir miyim?",
+"Anahtarı verecek misin?",
+"Yeni müşteri geldi, adı Kemal. Anahtarı ister.",
+"Kendal geldi ama ödeme yapmadı. Anahtarı verecek misin?",
+"Ahmet geldi, her şey tamam. Anahtarı verecek misin?",
+"Oyun bitti!"
+];
+
+document.getElementById("metin").innerText = sorular[0];
+
+function devam() {
+    if (oyunBitti) return;
+
+    let cevap = document.getElementById("cevap").value.toLowerCase().trim();
+
+    // karar sistemi
+    if (adim === 2) {
+        if (cevap === "hayır") {
+            puan++;
+            document.getElementById("sonuc").innerText = "Doğru karar!";
+        } else {
+            document.getElementById("sonuc").innerText = "Yanlış karar!";
+        }
+    }
+
+    if (adim === 4) {
+        if (cevap === "hayır") {
+            puan++;
+            document.getElementById("sonuc").innerText = "Doğru karar!";
+        } else {
+            document.getElementById("sonuc").innerText = "Yanlış karar!";
+        }
+    }
+
+    if (adim === 5) {
+        if (cevap === "evet") {
+            puan++;
+            document.getElementById("sonuc").innerText = "Doğru karar!";
+        } else {
+            document.getElementById("sonuc").innerText = "Yanlış karar!";
+        }
+    }
+
+    adim++;
+
+    document.getElementById("puan").innerText =
+        "Puan: " + puan + "/3";
+
+    document.getElementById("cevap").value = "";
+
+    if (adim < sorular.length - 1) {
+        document.getElementById("metin").innerText = sorular[adim];
+    } else {
+        bitir();
+    }
+}
+
+function bitir() {
+    oyunBitti = true;
+
+    document.getElementById("metin").innerText = "Oyun bitti!";
+    document.getElementById("sonuc").innerText =
+        "Final puanın: " + puan + "/3";
+}
+
+function cikis() {
+    document.body.innerHTML =
+        "<h2>Oyundan çıktın 👋</h2><p>Sayfayı yenileyerek tekrar oynayabilirsin.</p>";
+}
+</script>
+
+</body>
+</html>
